@@ -14,6 +14,8 @@ DSW1_LOC = RAM_BASE + $00CB7C
 DSW2_LOC = RAM_BASE + $00CB7E
 COINSW_LOC = RAM_BASE + $00F7C0
 
+StartButtons = $37C7
+
 CreditCount = $37B6
 
 ; Free play is DSW2_LOC & $80 == 0.
@@ -56,7 +58,8 @@ POST macro
 
 ; Free play shit --------------------------------------------
 
-; Bypass credit check with start button check if applicable
+; Bypass credit check with start button check if applicable.
+; Runs in attract mode.
 	ORG	$007C10
 	jmp	coin_in_check
 
@@ -76,7 +79,8 @@ POST macro
 	ORG	$008500
 	jmp	draw_credit_count
 
-; Insert Coin drawing is conditional
+; Insert Coin drawing is conditional.
+; Drawn at start of attract demo.
 	ORG	$00859A
 	jmp	draw_insert_coin
 
@@ -180,8 +184,10 @@ continue_hook_1:
 
 p2_start:
 	bset	#1, $C0E(a5) ; Set P2 flag
-	; Fallthrough.
+	bra	start_main
 p1_start:
+	bclr	#1, $C0E(a5)  ; Clear P2 flag
+start_main:
 	jsr	($00E10C).l ; Run fadeout
 	; Fallthrough.
 credits_in:
@@ -192,9 +198,7 @@ credits_in:
 ; appropriate, and then proceeds to the (now mostly skipped) start screen.
 coin_in_check:
 	FREEPLAY
-	clr.w	CreditCount(a5)  ; Clear credit count.
-	bclr	#1, $C0E(a5)  ; Clear P2 flag
-	move.b	($800007).l, d0  ; Read start buttons.
+	move.b	StartButtons(a5), d0  ; Read start buttons.
 	btst	#6, d0  ; P1 start?
 	beq	p1_start
 	btst	#5, d0  ; P2 start?
