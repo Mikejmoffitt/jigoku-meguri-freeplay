@@ -77,6 +77,9 @@ POST macro
 	jmp	draw_insert_coin
 
 ; New routines ---------------------------------------------
+	ORG	ROM_FREE
+	dc.b	"Jigoku Meguri / Bonze Adventure Free Play patch by Michael Moffitt"
+
 FreePlayText:
 	dc.b	10, "FREE PLAY ", 0
 
@@ -171,3 +174,30 @@ coin_in_check:
 	tst.w	$37B6(a5)
 	bne.s	credits_in
 	jmp	($007C16).l
+
+	ALIGN	16
+	dc.b	"                "
+	dc.b	"    0     0     "
+	dc.b	"     0   0      "
+	dc.b	"    0000000     "
+	dc.b	"   00 000 00    "
+	dc.b	"  00000000000   "
+	dc.b	"  0 0000000 0   "
+	dc.b	"  0 0     0 0   "
+	dc.b	"     00 00      "
+	dc.b	"                "
+	dc.b	"     Taito,     "
+	dc.b	"Even though you "
+	dc.b	"seem to hate us,"
+	dc.b	" we still       "
+	dc.b	"     love you   "
+	dc.b	"                "
+	dc.b	"    0     0     "
+	dc.b	"  0  0   0  0   "
+	dc.b	"  0 0000000 0   "
+	dc.b	"  000 000 000   "
+	dc.b	"  00000000000   "
+	dc.b	"   000000000    "
+	dc.b	"    0     0     "
+	dc.b	"   0       0    "
+	dc.b	"                "
